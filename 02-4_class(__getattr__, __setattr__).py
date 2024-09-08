@@ -13,10 +13,11 @@ class Proxy:
         return getattr(self._obj, name)
     
     # 자신에게 있던 없든 관계없이 무조건 호출됨.
+    # 만약, 이름이 밑줄"_"로 시작하면, super()를 사용해서 __setter__() 원래의 구현을 호출한다.
     def __setattr__(self, name, value):
         print(f"Proxy.__setattr__(name={name}, value={value})")
         if name.startswith("_"):
-            super().__setattr__(name, value)
+            super().__setattr__(name, value) # self._obj = obj 호출 시 부모의 __setattr__ 함수 호출 필요!
         else:
             setattr(self._obj, name, value)
 

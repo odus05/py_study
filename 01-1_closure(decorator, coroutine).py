@@ -1,5 +1,5 @@
 # 클로저
-# 함수가 데이터로 취급될 때는 함수가 정의된 곳의 주변 환경 정보가 함께 저장
+# 함수가 데이터로 취급될 때는 함수가 정의된 곳의 주변 환경 정보가 함께 저장된다.
 
 # 함수를 구성하는 문장과 실행 환경을 함께 묶은것을 "클로저"라고 부른다.
 
@@ -11,12 +11,13 @@ def calc():
     return mul_add
 
 c = calc()
-print(c(1))
+print(c(1), c(2), c(3), c(4), c(5))
+# 8 11 14 17 20
 
 # 클로저 내 지역 변수(free variable) 확인
 print(c.__closure__)
-print(c.__closure__[0].cell_contents)
-print(c.__closure__[1].cell_contents)
+print(c.__closure__[0].cell_contents) # 3
+print(c.__closure__[1].cell_contents) # 5
 
 print('='*50)
 # 클로저 내부에서 정의한 변수에 접근
@@ -78,6 +79,7 @@ if __name__ == "__main__":
         
     def trace(func):
         if enable_tracing:
+            print("__trace__")
             def call(*args, **kwargs):
                 debug_log.write(f"Calling {func.__name__}, {args}, {kwargs}\n")
                 result = func(*args, **kwargs)
@@ -86,7 +88,8 @@ if __name__ == "__main__":
             return call
         else:
             return func
-        
+    
+    @time_checker
     @trace
     def big_number(n):
         return n * n
@@ -94,23 +97,3 @@ if __name__ == "__main__":
     print(big_number(10))
     
     
-# Coroutine(코루틴)
-# Receiver 역활.
-def coroutine(func):
-    def start(*args, **kwargs):
-        g = func(*args, **kwargs)
-        next(g)
-        return g
-    return start
-
-@coroutine
-def receiver():
-    print("Ready to receive")
-    while True:
-        n = yield 
-        print(f"Got {n}")
-        
-r = receiver()
-r.send(1)
-r.send("Test")
-r.close()
