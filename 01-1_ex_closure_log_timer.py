@@ -41,18 +41,23 @@ def check_timer(func):
 def log(message):
     return message
 
+@check_timer
+def new_func():
+    pass
+
 #log = check_timer(log)
-
-log(message="message1", name='first', delay=30)
-log.get_timer(name='first')
-
-
-log(message="message2", name='second')
-
-if True:
-    log.reset_timer(name="second")
-log.get_timer(name='second')
+while ():
+    log(message="message1", name='first', delay=30)
+    log.get_timer(name='first')
 
 
-log(message="message1", name='first', delay=30)
+    log(message="message2", name='second')
+
+    if True:
+        log.reset_timer(name="first")
+        
+    log.get_timer(name='second')
+
+
+    log(message="message1", name='first', delay=30)
 
